@@ -1,6 +1,6 @@
 # epgp_diff
 
-Check difference between 2 epgp backups
+Check difference between 2 epgp backups. Tested with EPGP version [5.5.19](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/epgp/epgp-5.5.19.zip)
 
 ## Quick Start
 
@@ -24,6 +24,7 @@ Check difference between 2 epgp backups
 
 ```python3 main.py```
 
-## List of used sources:
+## List of used sources
 
  - https://github.com/Barsoomx/epgp_backup (work with epgp db files)
+ 
