@@ -1,6 +1,8 @@
 # epgp_diff
 
-Check difference between 2 epgp backups. Tested with EPGP version [5.5.19](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/epgp/epgp-5.5.19.zip)
+Check difference between 2 epgp backups. Scans logs created after the appearance of the 1st backup and adds all changes to the EP and GP values ​​from the 1st backup, checks whether the received values ​​are equal to the EP and GP values ​​in the 2nd backup.
+
+Tested with EPGP version [5.5.19](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/epgp/epgp-5.5.19.zip).
 
 ## Quick Start
 
@@ -27,4 +29,3 @@ Check difference between 2 epgp backups. Tested with EPGP version [5.5.19](https
 ## List of used sources
 
  - https://github.com/Barsoomx/epgp_backup (work with epgp db files)
- 
