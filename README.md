@@ -10,7 +10,7 @@ Check difference between 2 epgp backups
 
 ```cd epgp_diff```
 
-2. Copy ``.env.dist`` as ``.env`` and fill it with your credentials for access to AzerothCore DB:
+2. Copy ``.env.dist`` as ``.env`` and fill it:
 
 ```cp .env.dist .env```
 
