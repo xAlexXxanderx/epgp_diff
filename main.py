@@ -87,9 +87,13 @@ class EPGP_DB():
         del self._extras_p
 
 load_dotenv()
+backup_dir = os.environ.get("backup_dir")
 old_backup = os.environ.get("old_backup")
 new_backup = os.environ.get("new_backup")
 guild_name = os.environ.get("guild_name")
+
+if backup_dir == None:
+    backup_dir = current_path
 
 old_main_dict = {}
 main_dict = {}
@@ -105,7 +109,7 @@ def time_to_human_readable(timestamp):
 
 def get_info_from_file(backup_name,guild_name):
     epgp_db = EPGP_DB()
-    with open(current_path+'/'+backup_name, 'r', encoding='utf-8') as fh:
+    with open(backup_dir+'/'+backup_name, 'r', encoding='utf-8') as fh:
         txt = fh.read()
     table = lua.eval(txt.replace("EPGP_DB = ",""))
     epgp_db.roster_info=table.namespaces.log.profiles[guild_name].snapshot.roster_info
@@ -174,9 +178,9 @@ for key in main_dict:
             try:
                 if ((old_ep + changes_ep[key]) != new_ep):
                     print(key+': EP value is warning old EP = '+str(old_ep)+', changes = '+ str(changes_ep[key])+', new EP = '+str(new_ep)+', diff = '+str(old_ep+changes_ep[key]-new_ep))
-                    # print('/epgp ep '+key+' "Корекція" '+str(old_ep+changes_ep[key]-new_ep))
+                    # print('/epgp ep '+key+' "Корекція '+time_to_human_readable(old_epgp_db.snapshot_time).split(' ')[0]+'" '+str(old_ep+changes_ep[key]-new_ep))
                 if ((old_gp + changes_gp[key]) != new_gp):
                     print(key+': GP value is warning old GP = '+str(old_gp)+', changes = '+ str(changes_gp[key])+', new GP = '+str(new_gp)+', diff = '+str(old_gp+changes_gp[key]-new_gp))
-                    # print('/epgp gp '+key+' "Корекція" '+str(old_gp+changes_gp[key]-new_gp))
+                    # print('/epgp gp '+key+' "Корекція '+time_to_human_readable(old_epgp_db.snapshot_time).split(' ')[0]+'" '+str(old_gp+changes_gp[key]-new_gp))
             except KeyError:
                 pass
