@@ -155,6 +155,9 @@ for subtable in new_epgp_db.log.values():
             changes = changes + int(cost)
             changes_gp[main_name] = changes
 
+print("old backup: time "+time_to_human_readable(old_epgp_db.snapshot_time)+ " (filename: "+old_backup+")")
+print("new backup: time "+time_to_human_readable(new_epgp_db.snapshot_time)+ " (filename: "+new_backup+")")
+
 for key in main_dict:
     new_user = False
     try:
@@ -171,7 +174,9 @@ for key in main_dict:
             try:
                 if ((old_ep + changes_ep[key]) != new_ep):
                     print(key+': EP value is warning old EP = '+str(old_ep)+', changes = '+ str(changes_ep[key])+', new EP = '+str(new_ep)+', diff = '+str(old_ep+changes_ep[key]-new_ep))
+                    # print('/epgp ep '+key+' "Корекція" '+str(old_ep+changes_ep[key]-new_ep))
                 if ((old_gp + changes_gp[key]) != new_gp):
                     print(key+': GP value is warning old GP = '+str(old_gp)+', changes = '+ str(changes_gp[key])+', new GP = '+str(new_gp)+', diff = '+str(old_gp+changes_gp[key]-new_gp))
+                    # print('/epgp gp '+key+' "Корекція" '+str(old_gp+changes_gp[key]-new_gp))
             except KeyError:
                 pass
