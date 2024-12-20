@@ -100,6 +100,7 @@ main_dict = {}
 alts_dict = {}
 changes_ep = {}
 changes_gp = {}
+time_warning = []
 
 lua = LuaRuntime(unpack_returned_tuples=True)
 
@@ -159,8 +160,18 @@ for subtable in new_epgp_db.log.values():
             changes = changes + int(cost)
             changes_gp[main_name] = changes
 
+    if time == old_epgp_db.snapshot_time:
+        time, ep_or_gp, name, description, cost = list(subtable.values())
+        time_warning.append([time_to_human_readable(time), ep_or_gp, name, description, cost])
+
 print("old backup: time "+time_to_human_readable(old_epgp_db.snapshot_time)+ " (filename: "+old_backup+")")
 print("new backup: time "+time_to_human_readable(new_epgp_db.snapshot_time)+ " (filename: "+new_backup+")")
+
+if len(time_warning) > 0:
+    print("\nSome log entries was created in same time (in minutes) when created old backup. Correct analyze not guarantee")
+    for i in time_warning:
+        print(i)
+    print("")
 
 for key in main_dict:
     new_user = False
