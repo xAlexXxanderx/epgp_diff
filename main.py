@@ -174,30 +174,35 @@ if len(time_warning) > 0:
     print("")
 
 for key in main_dict:
-    new_user = False
     try:
         old_note = old_main_dict[key]
+        if (old_note != ""):
+            old_ep = int(old_note.split(',')[0])
+            old_gp = int(old_note.split(',')[1])
+        else:
+            old_ep = 0
+            old_gp = 0
     except KeyError:
-        new_user = True
-    if (old_note != ""):
-        old_ep = int(old_note.split(',')[0])
-        old_gp = int(old_note.split(',')[1])
-        new_note = main_dict[key]
-        if not new_user:
-            new_ep = int(new_note.split(',')[0])
-            new_gp = int(new_note.split(',')[1])
-            if key not in changes_ep:
-                if old_ep != new_ep:
-                    print(key+': EP value is warning old EP = '+str(old_ep)+' != new EP = '+str(new_ep)+' without changes in logs, diff = '+str(old_ep-new_ep))
-                if old_gp != new_gp:
-                    print(key+': GP value is warning old GP = '+str(old_gp)+' != new GP = '+str(new_gp)+' without changes in logs, diff = '+str(old_gp-new_gp))
-            else:
-                try:
-                    if ((old_ep + changes_ep[key]) != new_ep):
-                        print(key+': EP value is warning old EP = '+str(old_ep)+', changes = '+ str(changes_ep[key])+', new EP = '+str(new_ep)+', diff = '+str(old_ep+changes_ep[key]-new_ep))
-                        # print('/epgp ep '+key+' "Корекція '+time_to_human_readable(old_epgp_db.snapshot_time).split(' ')[0]+'" '+str(old_ep+changes_ep[key]-new_ep))
-                    if ((old_gp + changes_gp[key]) != new_gp):
-                        print(key+': GP value is warning old GP = '+str(old_gp)+', changes = '+ str(changes_gp[key])+', new GP = '+str(new_gp)+', diff = '+str(old_gp+changes_gp[key]-new_gp))
-                        # print('/epgp gp '+key+' "Корекція '+time_to_human_readable(old_epgp_db.snapshot_time).split(' ')[0]+'" '+str(old_gp+changes_gp[key]-new_gp))
-                except KeyError:
-                    pass
+        old_ep = 0
+        old_gp = 0
+    new_note = main_dict[key]
+    if (new_note != ""):
+        new_ep = int(new_note.split(',')[0])
+        new_gp = int(new_note.split(',')[1])
+    else:
+        new_ep = 0
+        new_gp = 0
+    if key not in changes_ep:
+        if old_ep != new_ep:
+            print(key+': EP value is warning old EP = '+str(old_ep)+' not equal new EP = '+str(new_ep)+' without changes in logs, diff = '+str(old_ep-new_ep))
+    else:
+        if ((old_ep + changes_ep[key]) != new_ep):
+            print(key+': EP value is warning old EP = '+str(old_ep)+', changes = '+ str(changes_ep[key])+', new EP = '+str(new_ep)+', diff = '+str(old_ep+changes_ep[key]-new_ep))
+            # print('/epgp ep '+key+' "Корекція '+time_to_human_readable(old_epgp_db.snapshot_time).split(' ')[0]+'" '+str(old_ep+changes_ep[key]-new_ep))
+    if key not in changes_gp:
+        if old_gp != new_gp:
+            print(key+': GP value is warning old GP = '+str(old_gp)+' not equal new GP = '+str(new_gp)+' without changes in logs, diff = '+str(old_gp-new_gp))
+    else:
+        if ((old_gp + changes_gp[key]) != new_gp):
+            print(key+': GP value is warning old GP = '+str(old_gp)+', changes = '+ str(changes_gp[key])+', new GP = '+str(new_gp)+', diff = '+str(old_gp+changes_gp[key]-new_gp))
+            # print('/epgp gp '+key+' "Корекція '+time_to_human_readable(old_epgp_db.snapshot_time).split(' ')[0]+'" '+str(old_gp+changes_gp[key]-new_gp))
