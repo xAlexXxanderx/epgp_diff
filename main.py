@@ -101,6 +101,7 @@ alts_dict = {}
 changes_ep = {}
 changes_gp = {}
 time_warning = []
+kicked_or_leaved_characters_with_logs = []
 
 lua = LuaRuntime(unpack_returned_tuples=True)
 
@@ -145,8 +146,10 @@ for subtable in new_epgp_db.log.values():
     if time > old_epgp_db.snapshot_time:
         if name in main_dict:
             main_name = name
-        else:
+        elif name in alts_dict:
             main_name = alts_dict[name]
+        else:
+            kicked_or_leaved_characters_with_logs.append([time_to_human_readable(time), ep_or_gp, name, description, cost])
         if ep_or_gp == 'EP':
             if main_name not in changes_ep:
                 changes_ep[main_name] = 0
@@ -168,9 +171,11 @@ print("old backup: time "+time_to_human_readable(old_epgp_db.snapshot_time)+ " (
 print("new backup: time "+time_to_human_readable(new_epgp_db.snapshot_time)+ " (filename: "+new_backup+")")
 
 if len(time_warning) > 0:
-    print("\nSome log entries was created in same time (in minutes) when created old backup. Correct analyze not guarantee")
+    print("\nSome log entries was created in same time (in minutes) when created old backup. Correct analyze not guarantee:")
     for i in time_warning:
         print(i)
+    print("")
+else:
     print("")
 
 for key in main_dict:
@@ -206,3 +211,8 @@ for key in main_dict:
         if ((old_gp + changes_gp[key]) != new_gp):
             print(key+': GP value is warning old GP = '+str(old_gp)+', changes = '+ str(changes_gp[key])+', new GP = '+str(new_gp)+', diff = '+str(old_gp+changes_gp[key]-new_gp))
             # print('/epgp gp '+key+' "Корекція '+time_to_human_readable(old_epgp_db.snapshot_time).split(' ')[0]+'" '+str(old_gp+changes_gp[key]-new_gp))
+
+if len(kicked_or_leaved_characters_with_logs) > 0:
+    print("\nSome characters are missing in the new guild roster, but present in new logs:")
+    for i in kicked_or_leaved_characters_with_logs:
+        print(i)
