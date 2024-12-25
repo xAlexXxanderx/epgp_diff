@@ -118,10 +118,11 @@ def get_info_from_file(backup_name,guild_name):
     epgp_db.snapshot_time=table.namespaces.log.profiles[guild_name].snapshot.time
     epgp_db.log = table.namespaces.log.profiles[guild_name].log
     guild_info = table.namespaces.log.profiles[guild_name].snapshot.guild_info
-    epgp_db.base_gp = int(re.search(r'@BASE_GP:(\d+)', guild_info).group(1))
-    epgp_db.decay_p = int(re.search(r'@DECAY_P:(\d+)', guild_info).group(1))
-    epgp_db.min_ep = int(re.search(r'@MIN_EP:(\d+)', guild_info).group(1))
-    epgp_db.extras_p = int(re.search(r'@EXTRAS_P:(\d+)', guild_info).group(1))
+    if guild_info != None:
+        epgp_db.base_gp = int(re.search(r'@BASE_GP:(\d+)', guild_info).group(1))
+        epgp_db.decay_p = int(re.search(r'@DECAY_P:(\d+)', guild_info).group(1))
+        epgp_db.min_ep = int(re.search(r'@MIN_EP:(\d+)', guild_info).group(1))
+        epgp_db.extras_p = int(re.search(r'@EXTRAS_P:(\d+)', guild_info).group(1))
     return(epgp_db)
 
 old_epgp_db = get_info_from_file(old_backup,guild_name)
